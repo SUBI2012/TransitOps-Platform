@@ -1,0 +1,61 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: transitops-backend
+
+  # ---- Default profile: H2 in-memory (great for hackathon demo) ----
+  datasource:
+    url: jdbc:h2:mem:transitops;DB_CLOSE_DELAY=-1;CASE_INSENSITIVE_IDENTIFIERS=TRUE
+    driver-class-name: org.h2.Driver
+    username: sa
+    password: ""
+
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    open-in-view: false
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+  jackson:
+    default-property-inclusion: non_null
+    serialization:
+      write-dates-as-timestamps: false
+
+app:
+  jwt:
+    secret: "ThisIsASecretKeyForTransitOpsHackathonPlatformChangeMeInProd123456"
+    expiration-ms: 86400000   # 24h
+  cors:
+    allowed-origins: "http://localhost:3000,http://localhost:5173"
+  seed:
+    enabled: true
+
+logging:
+  level:
+    com.transitops: INFO
+
+---
+spring:
+  config:
+    activate:
+      on-profile: postgres
+  datasource:
+    url: jdbc:postgresql://localhost:5432/transitops
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: postgres
+  jpa:
+    properties:
+      hibernate:
+        dialect:org.hibernate.dialect.postgresql.dialect
